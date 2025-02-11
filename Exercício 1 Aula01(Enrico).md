@@ -1,0 +1,21 @@
+# Compras 10/02/2025
+- Maçã
+- Banana
+- Pão
+- Twix
+- Arroz
+- Óleo Mineral
+- Azeite
+- Feijão
+- Cravo
+- Canela
+- Mamão
+- Açai
+- Presunto
+- Queijo
+- Leite Condensado
+- Rúcula
+- Pasta de dente
+- Caqui
+- Tomate defumado
+- Melancia Quadrada Asiática Branca e Preta
