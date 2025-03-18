@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descrição</title>
+</head>
+<body>
+
+    <dd>
+        <dt>While</dt>
+        
+        <dd>O comando while permite que um certo trecho de programa seja executado ENQUANTO uma certa condição for verdadeira. A forma do comando while é a seguinte:
+            <li>while (condição)</li>
+            <li>{</li>
+            <li>// comandos a serem repetidos</li>
+            <li>// comandos a serem repetidos</li>
+            <li>}</li>
+            <li>// comandos após o 'while'</li> 
+        </dd>
+        
+        <dt>O funcionamento é o seguinte</dt>
+        <dd>
+            <ol>
+               <li>Testa a condição;</li>
+               <li>Se a  condição for falsa então pula todos os comandos do bloco subordinado ao while e passa a executar os comandos após o bloco do while.</li>
+               <li>Se  condição for verdadeira então executa cada um dos comandos do bloco subordinado ao while.</li>
+               <li>Após executar o último comando do bloco do while volta ao passo 1.</li>
+            </ol>
+    </dd>
+    
+    
+    </dd>
+
+
+
+
+
+
+
+
+
+    <dd>
+        <dt>Do-While</dt>
+
+        <dd>O comando do-while permite que um certo trecho de programa seja executado ENQUANTO uma certa condição for verdadeira. A forma do comando do-while é a seguinte:</dd>
+            <li> do</li>
+            <li>{</li>
+            <li>// comandos a serem repetidos</li>
+            <li>// comandos a serem repetidos</li>
+            <li>} while (condição);</li>
+            <li>// comandos após o 'do-while'</li> 
+        </dd>
+
+        <dt>O funcionamento é o seguinte</dt>
+        <dd>
+            <ol>
+                <li>Executa o comando dentro do bloco do-while</li>
+                <li>Testa a condição</li>
+                <li>Se a condição for falsa então executa o comando que está logo após o bloco subordinado ao do-while</li>
+                <li>Se condição for verdadeira então volta ao passo 1</li>
+            </ol>
+        </dd>
+
+    </dd>
+
+
+    <dd>
+
+        <dt>For</dt>
+
+        <dd>O comando for permite que um certo trecho de programa seja executado um determinado número de vezes.</dd>
+        <li>for (comandos de inicialização;condição de teste;incremento/decremento)</li>
+        <li>{</li>
+        <li>//comandos a serem repetidos</li>
+        <li>comandos a serem repetidos</li>
+        <li>}</li>
+        <li>// comandos após o 'for'</li>
+
+
+    </dd>
+
+
+    <dd>
+
+        <dt>Break</dt>
+
+        <dd>Os laços em C possuem dois comandos de desvios: break e continue. Estes comandos funcionam com todos os comandos de repetição.</dd>
+        <dd>O comando break encerra o laço no ponto em que for executado.</dd>
+
+         <li>// Este programa le NO MAXIMO 3 números positivos</li>
+         <li>// Caso um número negativo seja digitado no meio da seqüência o laço é</li>
+         <li>// encerrado de imediato</li>
+            <li>#include <stdio.h></li>
+            <li>#include <conio.h></li>
+
+                <li>void main()</li>
+                    <li>{</li>
+                         <li>int contador, numero;</li>
+                         <li>for (contador = 1; contador <= 3; contador = contador+1) </li>
+                         <li>{</li>
+                         <li>scanf("%d",&numero);</li>
+                         <li>if (numero < 0)</li>
+                         <li>break;   // encerra o laço neste ponto !!! </li>
+                         <li>}</li>
+                         <li>printf ("Foram digitados %d numeros validos", contador-1);</li>
+                         <li>getch();</li>
+                         <li>}</li>
+    </dd> <br>
+    
+
+    <dd>
+
+        <dt>Continue</dt>
+        
+        <dd>O comando continue desvia o fluxo para o início do laço.</dd>
+
+        <dd>#include <stdio.h> <br>
+            #include <conio.h> <br>
+            void main() <br>
+            {<br>
+              int contador, numero;<br>
+            
+              clrscr();<br>
+              for (contador = 1; contador <= 5; contador = contador+1)<br>
+              {<br>
+                printf("Inicio do laco. Passo %d\n", contador);<br>
+            
+                if ((contador % 2) == 0)<br>
+                {<br>
+                  printf("Terminado antes do tempo....\n");<br>
+                  continue;<br>
+                }<br>
+                printf ("Final do Laco. Passo %d\n", contador);<br>
+              }<br>
+              getch();<br>
+            }<br>
+             
+             
+            
+            RESULTADO:<br>
+            
+            Inicio do laco. Passo 1<br>
+            Final do Laco. Passo 1<br>
+            Inicio do laco. Passo 2<br>
+            Terminado antes do tempo....<br>
+            Inicio do laco. Passo 3<br>
+            Final do Laco. Passo 3<br>
+            Inicio do laco. Passo 4<br>
+            Terminado antes do tempo....<br>
+            Inicio do laco. Passo 5<br>
+            Final do Laco. Passo 5 <br></dd>
+
+
+
+    </dd>
+
+</body>
+</html>
