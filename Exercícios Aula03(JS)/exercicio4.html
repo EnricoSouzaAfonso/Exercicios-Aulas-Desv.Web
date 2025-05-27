@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rendimento</title>
+    <script>
+        function calcular() {
+            let saldo = parseFloat(document.getElementById("saldo").value);
+            let juros = parseFloat(document.getElementById("juros").value);
+
+            if (saldo && juros) {
+                document.getElementById("mes1").textContent = "1 mês: R$ " + (saldo + saldo * (juros / 100)).toFixed(2);
+                document.getElementById("mes2").textContent = "2 meses: R$ " + (saldo + saldo * (juros / 100) * 2).toFixed(2);
+                document.getElementById("mes3").textContent = "3 meses: R$ " + (saldo + saldo * (juros / 100) * 3).toFixed(2);
+            } else {
+                document.getElementById("mes1").textContent = "Insira valores válidos.";
+                document.getElementById("mes2").textContent = "";
+                document.getElementById("mes3").textContent = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Rendimento</h2>
+    <input type="text" id="saldo" placeholder="Saldo">
+    <input type="text" id="juros" placeholder="Juros %">
+    <button onclick="calcular()">Calcular</button>
+
+    <h3>Resultados:</h3>
+    <p id="mes1"></p>
+    <p id="mes2"></p>
+    <p id="mes3"></p>
+</body>
+</html>
