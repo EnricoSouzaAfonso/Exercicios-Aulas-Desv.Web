@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota</title>
+    <script>
+
+        window.onload = inicio;
+
+	    function inicio() {
+		    document.getElementById('Avaliar').addEventListener('click', fApro_Repro);
+        }
+
+        function fApro_Repro() {
+            var Campo_Nota = document.getElementById('Nota');
+            var Nota = Campo_Nota.value;
+            var Saida = document.getElementById('Saida');
+
+            if(parseFloat(Nota)<6){
+                Saida.textContent = "Reprovado";
+            }
+            
+            else{
+                Saida.textContent = "Aprovado";
+            }
+        }   
+
+
+    </script>
+</head>
+<body>
+    <input type="text" id="Nota"><br>
+    <input type="button" value="Avaliar" id="Avaliar">
+    <p id="Saida"></p>
+</body>
+</html>
