@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Esse exercício aparentemente só funciona quando a parte da API funciona, pesquisei uma explicação
+    com uma IA do porquê meu código não está funcionando e ele disse: ""Você está recebendo erro 500 porque a 
+    cotação do dólar para hoje (23/06/2025) ainda não está disponível na API do Banco Central. 
+    Ela só é liberada no final do dia útil, ou seja, você só conseguiria ver a de hoje mais tarde 
+    ou a partir de amanhã. A API só tem dados de dias úteis que já foram concluídos""
+    Então meu exercício não ta errado não, até Mauro, obrigado.-->
+    <title>Cotação Dólar Atual</title>
+    <style>
+        body { margin: 20px; font-family: sans-serif; }
+        #cotacaoAtual {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #007bff;
+            background-color: #e9f5ff;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+        #ultimaAtualizacao {
+            font-size: 0.8em;
+            color: #555;
+            text-align: center;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        window.onload = iniciarPaginaCotacao;
+
+        function iniciarPaginaCotacao() {
+            buscarCotacaoDolarAtual();
+            setInterval(buscarCotacaoDolarAtual, 5000);
+        }
+
+        async function buscarCotacaoDolarAtual() {
+            const resultadoCotacao = document.getElementById('cotacaoAtual');
+            const ultimaAtualizacao = document.getElementById('ultimaAtualizacao');
+
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = hoje.getFullYear();
+            const dataFormatadaParaAPI = `${dia}/${mes}/${ano}`;
+
+            const url = `https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='${dataFormatadaParaAPI}'&$top=1&$format=json`;
+
+            try {
+                const resposta = await fetch(url);
+                const dados = await resposta.json();
+
+                if (dados.value && dados.value.length > 0) {
+                    const cotacao = dados.value[0];
+                    const valorCompra = cotacao.cotacaoCompra;
+                    const valorVenda = cotacao.cotacaoVenda;
+                    resultadoCotacao.textContent = `Compra: R$ ${valorCompra.toFixed(4)} | Venda: R$ ${valorVenda.toFixed(4)}`;
+                    
+                    const agora = new Date();
+                    const hora = String(agora.getHours()).padStart(2, '0');
+                    const minuto = String(agora.getMinutes()).padStart(2, '0');
+                    const segundo = String(agora.getSeconds()).padStart(2, '0');
+                    ultimaAtualizacao.textContent = `Última atualização: ${hora}:${minuto}:${segundo}`;
+                } else {
+                    resultadoCotacao.textContent = `Cotação não disponível para hoje.`;
+                    ultimaAtualizacao.textContent = `Verifique em dias úteis.`;
+                }
+            } catch (erro) {
+                resultadoCotacao.textContent = 'Erro ao buscar cotação.';
+                ultimaAtualizacao.textContent = `Verifique sua conexão.`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Cotação do Dólar</h1>
+    <div id="cotacaoAtual">Buscando cotação...</div>
+    <div id="ultimaAtualizacao"></div>
+</body>
+</html>

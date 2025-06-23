@@ -1,0 +1,91 @@
+<!--Esse exercício já tava na aula anterior então colocarei o mesmo código-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados do Usuário</title>
+    <style>
+        body { margin: 20px; font-family: sans-serif; }
+        div { margin-bottom: 10px; }
+        input, button { padding: 8px; margin-right: 5px; }
+        button { cursor: pointer; }
+        #dadosExibidos { border: 1px solid #ccc; padding: 10px; margin-top: 15px; }
+    </style>
+    <script>
+        window.onload = iniciar;
+
+        function iniciar() {
+            const botaoSalvar = document.getElementById('btnSalvar');
+            const botaoMostrar = document.getElementById('btnMostrar');
+            const botaoApagar = document.getElementById('btnApagar');
+
+            botaoSalvar.addEventListener('click', salvarDadosUsuario);
+            botaoMostrar.addEventListener('click', mostrarDadosUsuario);
+            botaoApagar.addEventListener('click', apagarDadosUsuario);
+        }
+
+        function salvarDadosUsuario() {
+            const campoNome = document.getElementById('nomeUsuario');
+            const campoEmail = document.getElementById('emailUsuario');
+
+            const nome = campoNome.value.trim();
+            const email = campoEmail.value.trim();
+
+            if (nome === '' || email === '') {
+                alert('Preencha nome e e-mail.');
+                return;
+            }
+
+            localStorage.setItem('nomeUsuario', nome);
+            localStorage.setItem('emailUsuario', email);
+
+            alert('Dados salvos!');
+            campoNome.value = '';
+            campoEmail.value = '';
+        }
+
+        function mostrarDadosUsuario() {
+            const nomeSalvo = localStorage.getItem('nomeUsuario');
+            const emailSalvo = localStorage.getItem('emailUsuario');
+            const paragrafoExibicao = document.getElementById('dadosExibidos');
+
+            if (nomeSalvo && emailSalvo) {
+                paragrafoExibicao.textContent = `Nome: ${nomeSalvo}, E-mail: ${emailSalvo}`;
+            } else {
+                paragrafoExibicao.textContent = 'Nenhum dado salvo.';
+            }
+        }
+
+        function apagarDadosUsuario() {
+            localStorage.removeItem('nomeUsuario');
+            localStorage.removeItem('emailUsuario');
+            document.getElementById('dadosExibidos').textContent = 'Dados apagados.';
+            alert('Dados apagados!');
+        }
+    </script>
+</head>
+<body>
+    <h1>Dados do Usuário</h1>
+
+    <div>
+        <label for="nomeUsuario">Nome:</label>
+        <input type="text" id="nomeUsuario" placeholder="Seu nome">
+    </div>
+    <div>
+        <label for="emailUsuario">E-mail:</label>
+        <input type="email" id="emailUsuario" placeholder="Seu e-mail">
+    </div>
+
+    <div>
+        <button id="btnSalvar">Salvar</button>
+        <button id="btnMostrar">Mostrar</button>
+        <button id="btnApagar">Apagar</button>
+    </div>
+
+    <hr>
+
+    <h2>Informações Salvas:</h2>
+    <p id="dadosExibidos">Nenhum dado exibido.</p>
+</body>
+</html>

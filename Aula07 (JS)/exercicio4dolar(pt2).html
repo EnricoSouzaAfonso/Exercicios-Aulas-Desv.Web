@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotação Dólar Olinda</title>
+    <style>
+        body { margin: 20px; font-family: sans-serif; }
+        div { margin-bottom: 10px; }
+        input[type="date"], button { padding: 8px; margin-right: 5px; }
+        button { cursor: pointer; }
+        #resultadoCotacao {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+    <script>
+        window.onload = iniciarPaginaCotacao;
+
+        function iniciarPaginaCotacao() {
+            const campoData = document.getElementById('dataCotacao');
+            const botaoBuscar = document.getElementById('btnBuscarCotacao');
+
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = hoje.getFullYear();
+            campoData.value = `${ano}-${mes}-${dia}`;
+
+            botaoBuscar.addEventListener('click', buscarCotacaoDolar);
+        }
+
+        async function buscarCotacaoDolar() {
+            const campoData = document.getElementById('dataCotacao');
+            const resultadoCotacao = document.getElementById('resultadoCotacao');
+            const dataSelecionada = campoData.value;
+
+            if (!dataSelecionada) {
+                resultadoCotacao.textContent = 'Por favor, selecione uma data.';
+                return;
+            }
+
+            const partesData = dataSelecionada.split('-');
+            const dataFormatadaParaAPI = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
+
+            const url = `https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='${dataFormatadaParaAPI}'&$top=1&$format=json`;
+
+            try {
+                const resposta = await fetch(url);
+                const dados = await resposta.json();
+
+                if (dados.value && dados.value.length > 0) {
+                    const cotacao = dados.value[0];
+                    const valorCompra = cotacao.cotacaoCompra;
+                    const valorVenda = cotacao.cotacaoVenda;
+                    resultadoCotacao.textContent = `Dólar em ${dataFormatadaParaAPI}: Compra R$ ${valorCompra.toFixed(4)} | Venda R$ ${valorVenda.toFixed(4)}`;
+                } else {
+                    resultadoCotacao.textContent = `Cotação não encontrada para ${dataFormatadaParaAPI}.`;
+                }
+            } catch (erro) {
+                resultadoCotacao.textContent = 'Erro ao buscar a cotação. Verifique a data e sua conexão.';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Cotação do Dólar</h1>
+
+    <div>
+        <label for="dataCotacao">Selecione a Data:</label>
+        <input type="date" id="dataCotacao">
+        <button id="btnBuscarCotacao">Buscar Cotação</button>
+    </div>
+
+    <div id="resultadoCotacao">
+        Selecione uma data para ver a cotação.
+    </div>
+</body>
+</html>

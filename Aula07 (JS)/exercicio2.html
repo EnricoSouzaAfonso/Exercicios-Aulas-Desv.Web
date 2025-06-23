@@ -1,0 +1,15 @@
+let numero = 2;
+
+// transforme numero em um valor JSON:
+let numeroJSON = JSON.stringify(numero);
+
+console.log(numeroJSON);
+console.log(typeof(numeroJSON));
+
+// transforme numeroJSON de volta em valor:
+let retorno = JSON.parse(numeroJSON);
+
+console.log(typeof(retorno));  
+
+let resultado = retorno * 3;
+console.log(resultado);
