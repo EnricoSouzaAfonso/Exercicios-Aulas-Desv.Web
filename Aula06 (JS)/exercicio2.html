@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS</title>
+    <script>
+        let contadorAtividades = 0;
+
+        window.onload = inicio;
+
+        function inicio() {
+            let botao = document.getElementById('btnAdiciona');
+            botao.addEventListener('click', adiciona);
+        }
+
+        function adiciona() {
+            let campoNome = document.getElementById('nome');
+            let nomeAtividade = campoNome.value;
+
+            if (nomeAtividade.trim() === '') {
+                alert('Por favor, digite o nome da atividade.');
+                return;
+            }
+
+            contadorAtividades++;
+            let novoIdCheckbox = `checkbox-${contadorAtividades}`;
+
+            let atividadesDiv = document.getElementById('atividades');
+
+            let novaAtividade = document.createElement('div');
+            novaAtividade.innerHTML = `
+                <input type="checkbox" id="${novoIdCheckbox}">
+                <label for="${novoIdCheckbox}">${nomeAtividade}</label>
+                <br>
+            `;
+            atividadesDiv.appendChild(novaAtividade);
+
+            campoNome.value = '';
+            campoNome.focus();
+        }
+    </script>
+</head>
+<body>
+    <label for="nome">Atividade:</label>
+    <input type="text" id="nome">
+    <input type="button" id="btnAdiciona" value="Adicionar"><br>
+
+    <div id="atividades"></div>
+
+</body>
+</html>

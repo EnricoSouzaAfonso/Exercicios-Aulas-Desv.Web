@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+    <script>
+        let contadorAtividades = 0;
+
+        window.onload = inicio;
+
+        function inicio() {
+            let botao = document.getElementById('btnAdiciona');
+            botao.addEventListener('click', adiciona);
+        }
+
+        function formatarData(data) {
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const ano = data.getFullYear();
+            const horas = String(data.getHours()).padStart(2, '0');
+            const minutos = String(data.getMinutes()).padStart(2, '0');
+            const segundos = String(data.getSeconds()).padStart(2, '0');
+            return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+        }
+
+        function adiciona() {
+            let campoNome = document.getElementById('nome');
+            let nomeAtividade = campoNome.value;
+
+            if (nomeAtividade.trim() === '') {
+                alert('Por favor, digite o nome da atividade.');
+                return;
+            }
+
+            contadorAtividades++;
+            let novoIdCheckbox = `checkbox-${contadorAtividades}`;
+
+            let atividadesDiv = document.getElementById('atividades');
+            let novaAtividadeContainer = document.createElement('div');
+            novaAtividadeContainer.innerHTML = `
+                <input type="checkbox" id="${novoIdCheckbox}" data-nome-atividade="${nomeAtividade}">
+                <label for="${novoIdCheckbox}">${nomeAtividade}</label>
+                <br>
+            `;
+            atividadesDiv.appendChild(novaAtividadeContainer);
+
+            let checkbox = document.getElementById(novoIdCheckbox);
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    let tabelaEncerradas = document.getElementById('tabelaEncerradas').getElementsByTagName('tbody')[0];
+                    let novaLinha = tabelaEncerradas.insertRow();
+
+                    let celulaNome = novaLinha.insertCell(0);
+                    let celulaData = novaLinha.insertCell(1);
+
+                    const dataEncerramento = new Date();
+                    celulaNome.textContent = this.dataset.nomeAtividade;
+                    celulaData.textContent = formatarData(dataEncerramento);
+                }
+            });
+
+            campoNome.value = '';
+            campoNome.focus();
+        }
+    </script>
+</head>
+<body>
+    <label for="nome">Atividade:</label>
+    <input type="text" id="nome">
+    <input type="button" id="btnAdiciona" value="Adicionar"><br>
+
+    <h2>Tarefas Pendentes:</h2>
+    <div id="atividades"></div>
+
+    <hr>
+
+    <h2>Tarefas Encerradas:</h2>
+    <table id="tabelaEncerradas">
+        <thead>
+            <tr>
+                <th>Nome da Tarefa</th>
+                <th>Data de Encerramento</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+</body>
+</html>

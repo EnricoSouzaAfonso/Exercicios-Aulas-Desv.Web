@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS - Gerenciador de Tarefas</title>
+    <style>
+        .task-item label {
+            padding: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .status-aguardando {
+            background-color: lightgray;
+        }
+        .status-atribuida {
+            background-color: lightgreen;
+        }
+        .status-parada {
+            background-color: yellow;
+        }
+        .status-rejeitada {
+            background-color: lightcoral;
+        }
+        .status-concluida {
+            background-color: lightblue;
+            text-decoration: line-through;
+        }
+    </style>
+    <script>
+        let contadorTarefas = 0;
+
+        window.onload = iniciar;
+
+        function iniciar() {
+            let botaoAdiciona = document.getElementById('btnAdiciona');
+            botaoAdiciona.addEventListener('click', adicionarTarefa);
+        }
+
+        function formatarDataHora(data) {
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const ano = data.getFullYear();
+            const horas = String(data.getHours()).padStart(2, '0');
+            const minutos = String(data.getMinutes()).padStart(2, '0');
+            const segundos = String(data.getSeconds()).padStart(2, '0');
+            return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+        }
+
+        function adicionarTarefa() {
+            let campoNomeTarefa = document.getElementById('nomeTarefa');
+            let nomeDaTarefa = campoNomeTarefa.value.trim();
+
+            if (nomeDaTarefa === '') {
+                alert('Por favor, digite o nome da tarefa.');
+                return;
+            }
+
+            contadorTarefas++;
+            let idTarefa = `tarefa-${contadorTarefas}`;
+            let idSelect = `select-${contadorTarefas}`;
+            let idRotulo = `rotulo-${contadorTarefas}`;
+
+            let divTarefasPendentes = document.getElementById('tarefasPendentes');
+            let novoItemTarefa = document.createElement('div');
+            novoItemTarefa.className = 'task-item';
+            novoItemTarefa.id = idTarefa;
+
+            novoItemTarefa.innerHTML = `
+                <select id="${idSelect}">
+                    <option value="aguardando">Aguardando</option>
+                    <option value="atribuida">Em andamento</option>
+                    <option value="parada">Pausada</option>
+                    <option value="rejeitada">Rejeitada</option>
+                    <option value="concluida">Concluída</option>
+                </select>
+                <label id="${idRotulo}" class="status-aguardando" data-nome-tarefa="${nomeDaTarefa}" for="${idSelect}">${nomeDaTarefa}</label>
+            `;
+            divTarefasPendentes.appendChild(novoItemTarefa);
+
+            let elementoSelect = document.getElementById(idSelect);
+            let elementoRotulo = document.getElementById(idRotulo);
+
+            elementoSelect.addEventListener('change', function() {
+                let statusAtual = this.value;
+                let nomeRecuperadoDaTarefa = elementoRotulo.dataset.nomeTarefa;
+                let containerDaTarefa = this.closest('.task-item');
+
+                elementoRotulo.classList.remove('status-aguardando', 'status-atribuida', 'status-parada', 'status-rejeitada', 'status-concluida');
+
+                if (statusAtual === 'atribuida') {
+                    elementoRotulo.classList.add('status-atribuida');
+                } else if (statusAtual === 'parada') {
+                    elementoRotulo.classList.add('status-parada');
+                } else if (statusAtual === 'rejeitada') {
+                    elementoRotulo.classList.add('status-rejeitada');
+                } else if (statusAtual === 'concluida') {
+                    elementoRotulo.classList.add('status-concluida');
+                    adicionarTarefaConcluida(nomeRecuperadoDaTarefa);
+                    if (containerDaTarefa) {
+                        divTarefasPendentes.removeChild(containerDaTarefa);
+                    }
+                } else {
+                    elementoRotulo.classList.add('status-aguardando');
+                }
+            });
+
+            campoNomeTarefa.value = '';
+            campoNomeTarefa.focus();
+        }
+
+        function adicionarTarefaConcluida(nomeTarefa) {
+            let corpoTabelaEncerradas = document.getElementById('tabelaEncerradasBody');
+            let novaLinha = corpoTabelaEncerradas.insertRow();
+
+            let celulaNome = novaLinha.insertCell(0);
+            let celulaData = novaLinha.insertCell(1);
+
+            const dataConclusao = new Date();
+            celulaNome.textContent = nomeTarefa;
+            celulaData.textContent = formatarDataHora(dataConclusao);
+        }
+    </script>
+</head>
+<body>
+    <h1>Gerenciador de Tarefas</h1>
+
+    <div>
+        <label for="nomeTarefa">Nova Tarefa:</label>
+        <input type="text" id="nomeTarefa" placeholder="Digite o nome da tarefa">
+        <input type="button" id="btnAdiciona" value="Adicionar Tarefa">
+    </div>
+
+    <hr>
+
+    <h2>Tarefas Pendentes</h2>
+    <div id="tarefasPendentes">
+    </div>
+
+    <hr>
+
+    <h2>Tarefas Concluídas</h2>
+    <table id="tabelaEncerradas">
+        <thead>
+            <tr>
+                <th>Nome da Tarefa</th>
+                <th>Data de Conclusão</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaEncerradasBody">
+        </tbody>
+    </table>
+</body>
+</html>
